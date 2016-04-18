@@ -30,32 +30,67 @@ window.onload = function start() {
     },
 
     update() {
+      const speed = 120;
       ayeesha.body.velocity.x = 0;
       ayeesha.body.velocity.y = 0;
 
-      if (cursors.left.isDown) {
-          ayeesha.body.velocity.x = -150;
-          ayeesha.animations.play('right');
+      const move = () => {
+        ayeesha.animations.play('right');
+      }
+
+      const moveDown = (amount) => {
+        ayeesha.body.velocity.y = amount;
+        move();
+      }
+
+      const moveUp = (amount) => {
+        ayeesha.body.velocity.y = -amount;
+        move();
+      }
+
+      const moveLeft = (amount) => {
+        if (ayeesha.scale.x === 1) { ayeesha.scale.x *= -1 }
+        ayeesha.body.velocity.x = -amount;
+        move();
+      }
+
+      const moveRight = (amount) => {
+        if (ayeesha.scale.x === -1) { ayeesha.scale.x *= -1 }
+        ayeesha.body.velocity.x = amount;
+        move();
+      }
+
+      if (cursors.down.isDown && cursors.left.isDown) {
+        moveDown(speed);
+        moveLeft(speed);
+
+      } else if (cursors.down.isDown && cursors.right.isDown) {
+        moveDown(speed);
+        moveRight(speed);
+
+      } else if (cursors.up.isDown && cursors.left.isDown) {
+        moveUp(speed);
+        moveLeft(speed);
+
+      } else if (cursors.up.isDown && cursors.right.isDown) {
+        moveUp(speed);
+        moveRight(speed);
+
+      } else if (cursors.left.isDown) {
+        moveLeft(speed);
 
       } else if (cursors.right.isDown) {
-          ayeesha.body.velocity.x = 150;
-          ayeesha.animations.play('right');
-
+        moveRight(speed);
 
       } else if (cursors.up.isDown) {
-          ayeesha.body.velocity.y = -150;
-          ayeesha.animations.play('right');
-
+        moveUp(speed);
 
       } else if (cursors.down.isDown) {
-          ayeesha.body.velocity.y = 150;
-          ayeesha.animations.play('right');
+        moveDown(speed);
 
       } else {
-          //  Stand still
-          ayeesha.animations.stop();
-
-          ayeesha.frame = 4;
+        ayeesha.animations.stop();
+        ayeesha.frame = 4;
       }
     }
   });
